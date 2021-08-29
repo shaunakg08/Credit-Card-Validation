@@ -5,7 +5,7 @@
 ## Usage and Working:
  Clone the project and run the code in `main.java` and enter the Credit Card Number. 
  <br>
- If the card would be valid it would display the following:
+ If the card number would be valid it would display the following:
  1. Major Industry Identifier (MII)
  2. Issuer Identification Number (IIN)
  3. Account Number
@@ -14,7 +14,7 @@
  Otherwise it would display that "The card in Invalid".
 
 ![alt text for screen readers](/img/valid.png "Text to show on mouseover")
-<br>
+<br><br>
 ![alt text for screen readers](/img/invalid.png "Text to show on mouseover")
 ## Contributing:
 
