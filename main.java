@@ -144,6 +144,7 @@ class Validate_Credit_Card
     {   sc = new Scanner(System.in);
         System.out.println("Enter Credit Card Number: ");
         cnn=sc.nextLine();
+        cnn=cnn.trim();
         a=cnn.length();
         if(a<=12 && a>=19)
             System.out.println("The Card is Invalid");
