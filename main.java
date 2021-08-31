@@ -4,6 +4,7 @@ class Validate_Credit_Card
 {   
     private static String cnn,accno;
     private static int a,sum,chkd;
+    private static Scanner sc;
 
     //function to remove alphabets and spaces
     private static void onlynum()
@@ -106,7 +107,7 @@ class Validate_Credit_Card
     //input card number and find length, check digit and account number
     private static void inputmassign()
     {   
-        Scanner sc= new Scanner(System.in);
+        sc = new Scanner(System.in);
         System.out.println("Enter Credit Card Number: ");
         cnn=sc.nextLine();
         onlynum();
