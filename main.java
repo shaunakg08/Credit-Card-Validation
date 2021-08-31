@@ -1,25 +1,24 @@
 import java.util.Scanner;
-class Validate_Credit_Card
-{   static String cnn;
-    static int a;
+
+class Final
+{   
+    private static String cnn,chkd,accno;
+    private static int a,sum;
     private static Scanner sc;
-  
-    
-    //function to check whether there are alphabets in the number and eliminate them;
-    private static void checkalpha()                       
-    {  
-        int x=0; String t="";
-        for(;x<a;x++)
-        {  char c=cnn.charAt(x);
-            if(c>='0' && c<='9')
-                t=t+c;
+
+    private static void onlynum()
+    {   cnn=cnn.replace(" ","");
+        String t = "";
+        for(int i = 0 ; i < cnn.length(); i++) {
+            char c = cnn.charAt(i);
+            if (c>='0' && c<='9')
+                t += c;
         }
         cnn=t;
 
-    } //end of checkalpha()
+    }
 
-    //function to identify Major Industry Identifier(MII)
-    private static void mii()                              
+    private static String mii()
     {   char c=cnn.charAt(0);
         String m="";
         switch(c)
@@ -55,14 +54,11 @@ class Validate_Credit_Card
             break;
         }
 
-        System.out.println("Major Industry Identifier (MII) : "+m);
-    } //end of mii()
+        return m;
+    }
 
-    
-    //function to identify Issuer Identification Number (IIN)
-    private static void iin()                              
-    {  
-        String in=cnn.substring(0,5),info="";
+    private static String iin()
+    {   String in=cnn.substring(0,5),info="";
         if(in.startsWith("34")==true || in.startsWith("37")==true)
             info="Amex";
         else if(in.startsWith("4"))
@@ -74,92 +70,75 @@ class Validate_Credit_Card
         else
             info="Unknown";
 
-        System.out.println("Issuer Identification Number (IIN) : "+info);
+        return info;
+    }
 
-    } //end of iin()
-
-    
-    //functon to extract the account number
-    private static void accno()                                   
-    { 
-        String acn=cnn.substring(6,cnn.length()-1);
-        System.out.println("Account Number : "+acn);
-    } //end of accno()
-
-    
-    /*function to extract digit at odd places and take out the sum using mod10 algorithm*/
-    private static int mod10algoodd()               
-    {  
-        int p, sum=0 ;
-        for(int x=a-2;x>=0;x=x-2)
-        {   char c =cnn.charAt(x);
-            p=2*(Integer.parseInt(c+""));
-            if(p>=10)
-                p=p-9;
-
-            sum=sum+p;
-
+    private static int mod10algosum()
+    {   String ccn1 = String.valueOf(cnn);
+        int count = 0,d,n;
+        for(int i = ccn1.length() - 1; i >= 0; i--){
+            n = Integer.parseInt(String.valueOf(ccn1.charAt(i)));
+            if(count % 2 == 1){
+                d = n * 2;
+                if(d > 9)
+                    d -= 9;
+                sum += d;
+            }else
+                sum += n;
+            count++;
         }
-
-        return sum; 
-
-    } //end of mod10algoodd()
-
-    //function to extract digit at eve places and take out the sum using mod10 algorithm
-    private static int mod10algoeve()    
-    {    int p, sum=0 ;
-        for(int x=a-1;x>=0;x=x-2)
-        {   char c =cnn.charAt(x);
-            p=(Integer.parseInt(c+""));
-            if(p>10)
-                p=p-9;
-
-            sum+=p;
-        }
-
+        
+      
         return sum;
+    }
 
-    }//end of mod10lalgoeve()
+    private static int fchkd()
+    {        int x = (((sum / 10) + 1 ) * 10 - (sum - Integer.parseInt(chkd)));
+        if(x > 9)
+            x = ((sum / 10) * 10 - (sum -  Integer.parseInt(chkd)));
 
-    //extract check digit i.e. the last digit from the string
-    private static char chkdigit()                
+        return x;
+    }
+
+    private static void inputmassign()
     {   
-        char chkd=cnn.charAt(cnn.length()-1);   
-        return chkd;
-    }//end of chkdigit()
-
-    
-    //display by calling functions if card is valid
-    private static void show()                    
-    {   checkalpha();
-        mii();
-        iin();
-        accno();
-        System.out.println("Check digit is = "+chkdigit());
-    } //end of show()
-
-    
-    //input the card number and check if it valid or not and display respective message
-    public static void main(String args[])                   
-    {   sc = new Scanner(System.in);
+         sc= new Scanner(System.in);
         System.out.println("Enter Credit Card Number: ");
         cnn=sc.nextLine();
-        cnn=cnn.trim();
-        a=cnn.length();
-        if(a<=12 && a>=19)
-            System.out.println("The Card is Invalid");
-        else
-        {   if((mod10algoeve()+mod10algoodd())%10==0)
-                show();
+        onlynum();
 
+        a=cnn.length();
+        chkd=String.valueOf(cnn.charAt(cnn.length() - 1));
+        accno =cnn.substring(6, cnn.length() - 1);
+
+    }
+
+    private static void display()
+    {  if(a>=12 && a<=19) 
+        {   if(mod10algosum()%10==0)
+            {  System.out.println(cnn+" is a Valid Credit Card Number");
+               System.out.println("Major Industry Identifier (MII): "+mii());
+               System.out.println("Issuer Identification Number (IIN): "+iin());
+               System.out.println("Account Number: "+accno);
+               System.out.println("Check Digit : "+chkd);
+            }
             else
-            {  
-                
-                System.out.println("The Card in Invalid");
-                System.out.println("check digit is = "+chkdigit());
+           {  
+               System.out.println("The Card is Invalid");
+               System.out.println("The check digit should have been: "+fchkd());
             }
         }
-    }//end of main()
-    
-    }//end of class  
- 
+        else
+              System.out.println("The Credit Card is Invalid");
+         
+        
+    }
+
+    public static void main(String args[])
+    {  
+        inputmassign();
+        display();
+
+    }
+
+}
