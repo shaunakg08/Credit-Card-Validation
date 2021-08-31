@@ -1,11 +1,11 @@
 import java.util.Scanner;
 
-class Final
+class Validate_Credit_Card
 {   
-    private static String cnn,chkd,accno;
-    private static int a,sum;
-    private static Scanner sc;
+    private static String cnn,accno;
+    private static int a,sum,chkd;
 
+    //function to remove alphabets and spaces
     private static void onlynum()
     {   cnn=cnn.replace(" ","");
         String t = "";
@@ -18,6 +18,7 @@ class Final
 
     }
 
+    //function to identify Major Industry Identifier(MII)
     private static String mii()
     {   char c=cnn.charAt(0);
         String m="";
@@ -48,15 +49,15 @@ class Final
             m="Healthcare,Telecommunications";
             break;
 
-            case '9':
-            case '0':
+            default :
             m="Unknown";
             break;
         }
 
         return m;
-    }
+    }//end of mii()
 
+    //function to identify Issuer Identification Number (IIN)
     private static String iin()
     {   String in=cnn.substring(0,5),info="";
         if(in.startsWith("34")==true || in.startsWith("37")==true)
@@ -73,16 +74,17 @@ class Final
         return info;
     }
 
+    //function to extract digit and take out the sum using mod10 algorithm
     private static int mod10algosum()
-    {   String ccn1 = String.valueOf(cnn);
-        int count = 0,d,n;
-        for(int i = ccn1.length() - 1; i >= 0; i--){
-            n = Integer.parseInt(String.valueOf(ccn1.charAt(i)));
+    {   String t = String.valueOf(cnn);
+        int count = 0,p,n;
+        for(int i = t.length() - 1; i >= 0; i--){
+            n = Integer.parseInt(String.valueOf(t.charAt(i)));
             if(count % 2 == 1){
-                d = n * 2;
-                if(d > 9)
-                    d -= 9;
-                sum += d;
+                p = n * 2;
+                if(p> 9)
+                    p -= 9;
+                sum += p;
             }else
                 sum += n;
             count++;
@@ -91,28 +93,32 @@ class Final
       
         return sum;
     }
-
-    private static int fchkd()
-    {        int x = (((sum / 10) + 1 ) * 10 - (sum - Integer.parseInt(chkd)));
-        if(x > 9)
-            x = ((sum / 10) * 10 - (sum -  Integer.parseInt(chkd)));
-
-        return x;
+    
+    //to find the correct check digit if card number is not valid
+    private static int crtchkd()
+    {  
+        int nr = (((sum / 10) + 1 ) * 10 - (sum - chkd));
+        if(nr > 9)
+            nr = ((sum / 10) * 10 - (sum - chkd));
+        return nr;
     }
-
+  
+    //input card number and find length, check digit and account number
     private static void inputmassign()
     {   
-         sc= new Scanner(System.in);
+        Scanner sc= new Scanner(System.in);
         System.out.println("Enter Credit Card Number: ");
         cnn=sc.nextLine();
         onlynum();
 
         a=cnn.length();
-        chkd=String.valueOf(cnn.charAt(cnn.length() - 1));
+        chkd=Integer.parseInt(String.valueOf(cnn.charAt(cnn.length() - 1)));
         accno =cnn.substring(6, cnn.length() - 1);
 
     }
 
+    
+    //display the output
     private static void display()
     {  if(a>=12 && a<=19) 
         {   if(mod10algosum()%10==0)
@@ -125,7 +131,7 @@ class Final
             else
            {  
                System.out.println("The Card is Invalid");
-               System.out.println("The check digit should have been: "+fchkd());
+               System.out.println("The check digit should have been: "+crtchkd());
             }
         }
         else
@@ -134,7 +140,9 @@ class Final
         
     }
 
-    public static void main(String args[])
+    
+                //main function to call other  
+    public static void main(String[] args)
     {  
         inputmassign();
         display();
