@@ -10,12 +10,15 @@
  2. Issuer Identification Number (IIN)
  3. Account Number
  4. Check digit
-
- Otherwise it would display that "The card in Invalid".
+ Otherwise it would display that "The card in Invalid". 
 
 ![alt text for screen readers](/img/valid.png "Text to show on mouseover")
 <br><br>
 ![alt text for screen readers](/img/invalid.png "Text to show on mouseover")
+
+ ##### Refer to this pdf for more information: [Reference.pdf](https://github.com/Shaunak0806/Credit-Card-Validation/blob/main/Credit%20Card%20Validation%20pdf.pdf)
+ 
+ 
 ## Contributing:
 
 1. Fork it!
